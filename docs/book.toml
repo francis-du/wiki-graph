@@ -7,4 +7,4 @@ title = "Wiki Graph Docs"
 
 [output.html]
 cname = "wiki-graph.francis.run"
-git-repository-url = "https://github.com/francis-du/mdbook-grogu-theme"
+git-repository-url = "https://github.com/francis-du/wiki-graph"
