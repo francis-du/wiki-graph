@@ -15,6 +15,8 @@
 
 -----------------------------------------------------------------------------------------------
 
+## [Live demo](https://wiki-graphs.herokuapp.com/)
+
 ## How to use
 
 Enter keywords and click search, it will generate a network graph.
@@ -25,11 +27,9 @@ Enter keywords and click search, it will generate a network graph.
 
 [![](images/graph.png)](https://wiki-graphs.herokuapp.com)
 
-## [Live demo](https://wiki-graphs.herokuapp.com/)
-
 ## How to deploy
 
-### CLI Command
+### CLI Commands
 
 ```shell
 ░██╗░░░░░░░██╗██╗██╗░░██╗██╗  ░██████╗░██████╗░░█████╗░██████╗░██╗░░██╗
@@ -91,6 +91,10 @@ git push heroku master
 ```
 
 ### Docker
+
+```shell
+docker run -d -p 3690:3690 francisdu/wiki-graph 
+```
 
 ## License
 

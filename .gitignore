@@ -1,5 +1,5 @@
 /target
 .now
 .idea
-.iml
+*.iml
 Cargo.lock
