@@ -1,5 +1,5 @@
 use log::{error, info};
-use rand::{Rng, thread_rng};
+use rand::{thread_rng, Rng};
 use serde::{Deserialize, Serialize};
 use tide::Request;
 use whatlang::{detect, Lang};
@@ -80,7 +80,7 @@ pub async fn search(req: Request<()>) -> tide::Result {
 
                     let id = match page.get_pageid().unwrap().parse::<u32>() {
                         Ok(i) => i,
-                        Err(_) => thread_rng().gen()
+                        Err(_) => thread_rng().gen(),
                     };
 
                     let mut children =

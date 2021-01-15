@@ -1,6 +1,6 @@
 use log::info;
-use tide::{Response, StatusCode};
 use tide::http::mime;
+use tide::{Response, StatusCode};
 
 use crate::handler::get_handle;
 
@@ -47,7 +47,7 @@ impl API {
             let response = Response::builder(StatusCode::Ok)
                 .body(
                     "<div>Wiki Graph api docs link: \
-                    <a href=\"https://wiki-graph.fracnis.run\"> \
+                    <a href=\"https://wiki-graph.francis.run/\"> \
                     https://wiki-graph.fracnis.run</a></div>",
                 )
                 .content_type(mime::HTML)

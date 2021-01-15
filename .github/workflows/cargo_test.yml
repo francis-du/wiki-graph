@@ -16,9 +16,6 @@ jobs:
           - build: stable
             os: ubuntu-latest
             rust: stable
-          - build: beta
-            os: ubuntu-latest
-            rust: beta
           - build: nightly
             os: ubuntu-latest
             rust: nightly
@@ -28,15 +25,11 @@ jobs:
           - build: windows
             os: windows-latest
             rust: stable
-          - build: msrv
-            os: ubuntu-latest
-            rust: 1.39.0
     steps:
       - uses: actions/checkout@master
       - name: Install Rust
         run: |
           rustup set profile minimal
-          rustup component remove --toolchain=${{ matrix.rust }} rust-docs || echo "already removed"
           rustup update --no-self-update ${{ matrix.rust }}
           rustup default ${{ matrix.rust }}
           rustup -V
@@ -44,5 +37,3 @@ jobs:
           cargo -V
       - name: Build and run tests
         run: cargo test
-      - name: Test no default
-        run: cargo test --no-default-features
