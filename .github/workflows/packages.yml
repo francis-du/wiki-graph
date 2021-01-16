@@ -1,0 +1,20 @@
+name: Publish Package
+on:
+  release:
+    branches: [ main ]
+    types: [ published ]
+jobs:
+  push_to_registry:
+    name: Push Docker image to GitHub Packages
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+      - name: Push to GitHub Packages
+        uses: docker/build-push-action@v1
+        with:
+          username: francis-du
+          password: ${{ secrets.DEPLOY_KEY }}
+          registry: docker.pkg.github.com
+          repository: francis-du/wiki-graph/wiki-graph
+          tag_with_ref: true
