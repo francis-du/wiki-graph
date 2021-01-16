@@ -182,7 +182,8 @@
 <hr />
 <h2><a class="header" href="#a-hrefhttpswiki-graphsherokuappcomlive-demoa" id="a-hrefhttpswiki-graphsherokuappcomlive-demoa"><a href="https://wiki-graphs.herokuapp.com/">Live demo</a></a></h2>
 <h2><a class="header" href="#how-to-use" id="how-to-use">How to use</a></h2>
-<p>Enter keywords and click search, it will generate a network graph.</p>
+<p>Enter keywords and click search, it will generate a network graph.
+And keywords support multiple languages. eg: <code>en</code>,<code>zh</code>,<code>es</code>,<code>it</code>,<code>fr</code>.</p>
 <p><a href="https://wiki-graphs.herokuapp.com"><img src="images/index.png" alt="" /></a></p>
 <h2><a class="header" href="#search-result" id="search-result">Search result</a></h2>
 <p><a href="https://wiki-graphs.herokuapp.com"><img src="images/graph.png" alt="" /></a></p>
@@ -250,15 +251,17 @@ git commit -am &quot;hello heroku&quot;
 git push heroku master
 </code></pre>
 <h3><a class="header" href="#docker" id="docker">Docker</a></h3>
-<pre><code class="language-shell">docker run -d -p 3690:3690 francisdu/wiki-graph 
+<pre><code class="language-shell">docker run -d -p 3690:3690 francisdu/wiki-graph
 </code></pre>
 <h2><a class="header" href="#license" id="license">License</a></h2>
 <p><a href="LICENSE">MIT LICENSE</a></p>
 <h1><a class="header" href="#api" id="api">Api</a></h1>
+<h2><a class="header" href="#request-url" id="request-url">Request URL</a></h2>
+<p><a href="https://wiki-graph-api.herokuapp.com/">https://wiki-graph-api.herokuapp.com</a></p>
 <h2><a class="header" href="#search" id="search">Search</a></h2>
 <pre><code>GET /api/v1/search
 
-?woard - Search keywords
+?words - Search keywords
 
 ?limit - limit search results default=3
 </code></pre>
