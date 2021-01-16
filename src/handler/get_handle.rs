@@ -2,13 +2,14 @@ use log::{error, info};
 use rand::{thread_rng, Rng};
 use serde::{Deserialize, Serialize};
 use tide::Request;
-use whatlang::{detect, Lang};
 use wikipedia::Wikipedia;
 
 use crate::common::network::ProxyClient;
+use crate::common::semantics;
 
 #[derive(Debug, Deserialize)]
 struct Search {
+    lang: Option<String>,
     words: String,
     limit: Option<u32>,
 }
@@ -50,27 +51,26 @@ pub async fn search(req: Request<()>) -> tide::Result {
             WikiGraphInfo::new(0, query.words.clone(), 3, query.words.clone(), vec![]);
 
         let mut wiki = Wikipedia::<ProxyClient>::default();
+        // limit page results
         if query.limit.is_some() {
             wiki.search_results = query.limit.unwrap();
         } else {
             wiki.search_results = 10
         }
 
-        let language = match detect(query.words.as_str()) {
-            None => "en",
-            Some(lang) => match lang.lang() {
-                Lang::Eng => "en",
-                Lang::Cmn => "zh",
-                Lang::Spa => "es",
-                Lang::Ita => "it",
-                Lang::Fra => "fr",
-                _ => "en",
-            },
-        };
-
-        let words = query.words.as_str();
-        wiki.set_base_url(format!("https://{}.wikipedia.org/w/api.php", language).as_str());
+        // limit results
+        if query.lang.is_some() {
+            wiki.set_base_url(
+                format!("https://{}.wikipedia.org/w/api.php", query.lang.unwrap()).as_str(),
+            );
+        } else {
+            let language = semantics::identify(query.words.clone());
+            wiki.set_base_url(format!("https://{}.wikipedia.org/w/api.php", language).as_str());
+        }
         info!("Base URL => {}", wiki.base_url());
+
+        // data processing
+        let words = query.words.as_str();
         match wiki.search(words) {
             Ok(results) => {
                 for res in results {
