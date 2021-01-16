@@ -1,7 +1,5 @@
 FROM rust as builder
 
-COPY config ~/.cargo
-
 WORKDIR app
 COPY . .
 
