@@ -18,6 +18,7 @@
 ## How to use
 
 Enter keywords and click search, it will generate a network graph.
+And keywords support multiple languages. eg: `en`,`zh`,`es`,`it`,`fr`.
 
 [![](docs/src/images/index.png)](https://wiki-graphs.herokuapp.com)
 

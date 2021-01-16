@@ -20,6 +20,7 @@
 ## How to use
 
 Enter keywords and click search, it will generate a network graph.
+And keywords support multiple languages. eg: `en`,`zh`,`es`,`it`,`fr`.
 
 [![](images/index.png)](https://wiki-graphs.herokuapp.com)
 
@@ -93,7 +94,7 @@ git push heroku master
 ### Docker
 
 ```shell
-docker run -d -p 3690:3690 francisdu/wiki-graph 
+docker run -d -p 3690:3690 francisdu/wiki-graph
 ```
 
 ## License
