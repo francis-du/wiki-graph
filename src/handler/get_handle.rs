@@ -2,7 +2,7 @@ use log::{error, info};
 use rand::{thread_rng, Rng};
 use serde::{Deserialize, Serialize};
 use tide::Request;
-use wikipedia::{Wikipedia};
+use wikipedia::Wikipedia;
 
 use crate::common::network::ProxyClient;
 use crate::common::semantics;
@@ -106,7 +106,11 @@ pub async fn search(req: Request<()>) -> tide::Result {
                 }
             }
             Err(err) => {
-                error!("Search keyword `{}` wiki error,type => {:?}", words.clone(), err);
+                error!(
+                    "Search keyword `{}` wiki error,type => {:?}",
+                    words.clone(),
+                    err
+                );
             }
         };
         response.push(wiki_info);

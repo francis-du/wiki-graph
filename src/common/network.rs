@@ -15,7 +15,7 @@ pub struct ProxyClient {
 impl Default for ProxyClient {
     fn default() -> Self {
         ProxyClient {
-            user_agent: "wikipedia (https://github.com/seppo0010/wikipedia-rs)".to_owned(),
+            user_agent: "Wiki Graph Search Service/v0.1.0/franics@francis.run/(https://github.com/francis-du/wiki-graph)".to_owned(),
         }
     }
 }
