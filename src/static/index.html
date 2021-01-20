@@ -238,7 +238,7 @@
 <div id="main" class="main">
     <h1>Wiki Search</h1>
     <div class="search">
-        <input id="words" type="text" value="rust">
+        <input id="words" type="text" value="sunspot">
         <input id="submit" type="submit" value="Search" onclick="search(document.getElementById('words').value)">
     </div>
     <script>
@@ -295,7 +295,7 @@
                 networkSeries.dataFields.children = "children";
 
                 networkSeries.nodes.template.label.text = "{name}"
-                networkSeries.fontSize = 13;
+                networkSeries.fontSize = 15;
                 networkSeries.linkWithStrength = 0;
 
                 const nodeTemplate = networkSeries.nodes.template;
@@ -308,7 +308,7 @@
                 linkTemplate.strokeWidth = 1;
                 const linkHoverState = linkTemplate.states.create("hover");
                 linkHoverState.properties.strokeOpacity = 1;
-                linkHoverState.properties.strokeWidth = 2;
+                linkHoverState.properties.strokeWidth = 1;
 
                 nodeTemplate.events.on("over", function (event) {
                     const dataItem = event.target.dataItem;

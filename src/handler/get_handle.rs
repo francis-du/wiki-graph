@@ -48,14 +48,14 @@ pub async fn search(req: Request<()>) -> tide::Result {
     if req.query::<Search>().is_ok() {
         let query: Search = req.query()?;
         let mut wiki_info =
-            WikiGraphInfo::new(0, query.words.clone(), 3, query.words.clone(), vec![]);
+            WikiGraphInfo::new(0, query.words.clone(), 2, query.words.clone(), vec![]);
 
         let mut wiki = Wikipedia::<ProxyClient>::default();
         // limit page results
         if query.limit.is_some() {
             wiki.search_results = query.limit.unwrap();
         } else {
-            wiki.search_results = 10
+            wiki.search_results = 20
         }
 
         // limit results
@@ -84,19 +84,19 @@ pub async fn search(req: Request<()>) -> tide::Result {
                     };
 
                     let mut children =
-                        WikiGraphInfo::new(id, title, 2, page.get_summary().unwrap(), vec![]);
+                        WikiGraphInfo::new(id, title, 1, page.get_summary().unwrap(), vec![]);
 
                     let mut index: u32 = 0;
                     for x in links_iter {
                         index += 1;
-                        if index > 20 {
+                        if index > 30 {
                             break;
                         }
                         let link_title = x.title;
                         let wiki_link = WikiGraphInfo::new(
                             index,
                             link_title.clone(),
-                            1,
+                            0,
                             link_title.to_string(),
                             vec![],
                         );
