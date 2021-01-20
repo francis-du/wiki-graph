@@ -5,7 +5,7 @@ use tide::http::mime;
 use tide::{Request, Response, StatusCode};
 use wikipedia::Wikipedia;
 
-use crate::common::conf::CHILD_LINK_LIMIT;
+use crate::common::conf::{CHILD_LINK_LIMIT, SEARCH_RESULTS_LIMIT};
 use crate::common::network::ProxyClient;
 use crate::common::semantics;
 
@@ -57,7 +57,7 @@ pub async fn search(req: Request<()>) -> tide::Result {
         if query.limit.is_some() {
             wiki.search_results = query.limit.unwrap();
         } else {
-            wiki.search_results = 20
+            wiki.search_results = SEARCH_RESULTS_LIMIT
         }
 
         // limit results
@@ -89,8 +89,8 @@ pub async fn search(req: Request<()>) -> tide::Result {
                 for res in results {
                     let page = wiki.page_from_title(res.to_string());
                     let title = page.get_title().unwrap();
-                    let links_iter = page.get_links().unwrap();
-                    links_iter.filter(|&x| x.title.contains(words.clone()));
+                    let links_iter = page.get_links().unwrap()
+                        .filter(|x| x.title.clone().contains(words.clone()));
 
                     let id = match page.get_pageid().unwrap().parse::<u32>() {
                         Ok(i) => i,
