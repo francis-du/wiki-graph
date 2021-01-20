@@ -266,7 +266,6 @@
                 dataType: "json",
                 cache: false,
                 success: function (data) {
-                    console.log(data)
                     document.getElementById("loading").style.display = "none";
                     if (data.length === 0) {
                         document.location.replace("/")

@@ -1,7 +1,10 @@
 pub mod network;
 pub mod semantics;
 
-pub mod conf {}
+pub mod conf {
+    pub const CHILD_LINK_LIMIT: u32 = 20;
+    pub const SEARCH_RESULTS_LIMIT: u32 = 20;
+}
 
 pub mod logger {
     use std::io;
