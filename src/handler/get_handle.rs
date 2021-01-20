@@ -77,7 +77,7 @@ pub async fn search(req: Request<()>) -> tide::Result {
             0,
             link.clone(),
             query.words.clone(),
-            3,
+            9,
             query.words.clone(),
             vec![],
         );
@@ -100,7 +100,7 @@ pub async fn search(req: Request<()>) -> tide::Result {
                         id,
                         link.clone(),
                         title,
-                        3,
+                        6,
                         page.get_summary().unwrap(),
                         vec![],
                     );
@@ -117,7 +117,7 @@ pub async fn search(req: Request<()>) -> tide::Result {
                             index,
                             link.clone(),
                             link_title.clone(),
-                            2,
+                            3,
                             link_title.to_string(),
                             vec![],
                         );
