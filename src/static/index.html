@@ -251,7 +251,7 @@
         }
 
         function search(words) {
-            // document.getElementById("main").style.display = "none";
+            document.getElementById("main").style.display = "none";
             document.getElementById("loading").style.display = "";
 
             $.ajax({
@@ -280,6 +280,9 @@
             document.getElementById("chart").style.height = "100%";
             document.getElementById("chart").style.width = "100%";
             document.getElementById("chart").style.position = "absolute";
+            document.getElementById("chart").style.marginRight = "auto";
+            document.getElementById("chart").style.marginLeft = "auto";
+
             am4core.ready(function () {
                 am4core.useTheme(am4themes_animated);
                 var chart = am4core.create("chart", am4plugins_forceDirected.ForceDirectedTree);

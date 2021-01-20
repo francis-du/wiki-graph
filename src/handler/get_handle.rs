@@ -107,7 +107,7 @@ pub async fn search(req: Request<()>) -> tide::Result {
             }
             Err(err) => {
                 error!(
-                    "Search keyword `{}` wiki error,type => {:?}",
+                    "Search keyword \"{}\" wiki error,type => {:?}",
                     words.clone(),
                     err
                 );
