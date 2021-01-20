@@ -1,1 +1,1 @@
-web ./target/release/wiki-graph -p ${PORT} api
+web ./target/release/wiki-graph -p ${PORT} app

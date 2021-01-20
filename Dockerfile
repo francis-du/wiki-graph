@@ -11,4 +11,4 @@ COPY --from=builder /app/target/release/wiki-graph /usr/local/bin
 
 EXPOSE 3690
 
-CMD ["wiki-graph","-d","api"]
+CMD ["wiki-graph","-d","app"]
