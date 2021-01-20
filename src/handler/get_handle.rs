@@ -2,7 +2,7 @@ use log::{error, info};
 use rand::{thread_rng, Rng};
 use serde::{Deserialize, Serialize};
 use tide::Request;
-use wikipedia::Wikipedia;
+use wikipedia::{Wikipedia};
 
 use crate::common::network::ProxyClient;
 use crate::common::semantics;
@@ -67,7 +67,7 @@ pub async fn search(req: Request<()>) -> tide::Result {
             let language = semantics::identify(query.words.clone());
             wiki.set_base_url(format!("https://{}.wikipedia.org/w/api.php", language).as_str());
         }
-        info!("Base URL => {}", wiki.base_url());
+        info!("Wikipedia api address {}", wiki.base_url());
 
         // data processing
         let words = query.words.as_str();
@@ -106,7 +106,7 @@ pub async fn search(req: Request<()>) -> tide::Result {
                 }
             }
             Err(err) => {
-                error!("search keyword {} wiki error - {:?}", words.clone(), err);
+                error!("Search keyword `{}` wiki error,type => {:?}", words.clone(), err);
             }
         };
         response.push(wiki_info);

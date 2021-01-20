@@ -251,7 +251,7 @@
         }
 
         function search(words) {
-            document.getElementById("main").style.display = "none";
+            // document.getElementById("main").style.display = "none";
             document.getElementById("loading").style.display = "";
 
             $.ajax({
@@ -274,11 +274,6 @@
                     window.alert("Fetch data is error! Status: " + textStatus)
                 },
             });
-        }
-
-        function switchSearch() {
-            document.getElementById("chart").style.display = "none";
-            document.getElementById("main").style.display = "";
         }
 
         function draw(data) {

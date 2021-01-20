@@ -31,7 +31,7 @@ impl HttpClient for ProxyClient {
     {
         let client = match std::env::var("PROXY") {
             Ok(proxy_url) => {
-                info!("proxy with {}", &proxy_url);
+                info!("Using proxy {}", &proxy_url);
                 let client;
                 if proxy_url.contains("https://") {
                     client = reqwest::Client::builder()
@@ -67,8 +67,8 @@ pub fn set_proxy() -> Result<(), reqwest::Error> {
     match json["proxy"].as_str() {
         None => {}
         Some(proxy) => {
-            std::env::set_var("PROXY", format!("http:://{}", &proxy));
-            info!("Setup proxy http://{}", proxy);
+            info!("Setup proxy http://{}", &proxy);
+            std::env::set_var("PROXY", format!("http://{}", proxy));
         }
     };
 

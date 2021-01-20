@@ -57,10 +57,6 @@ enum SubCommand {
 async fn main() -> tide::Result<()> {
     let opts: Opts = Opts::from_args();
 
-    if opts.proxy {
-        network::set_proxy()?;
-    }
-
     match opts.debug {
         true => {
             match Logger::default().level("debug").setup() {
@@ -79,6 +75,10 @@ async fn main() -> tide::Result<()> {
                 Err(err) => println!("Logger setup error! \n{}", err),
             };
         }
+    }
+
+    if opts.proxy {
+        network::set_proxy()?;
     }
 
     match opts.subcmd {
