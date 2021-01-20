@@ -255,9 +255,9 @@
             document.getElementById("loading").style.display = "";
             let url = "search?words=" + words;
 
-            // if (window.location.host.indexOf("127.0.0.1") || window.location.host.indexOf("localhost")) {
-            //     url = "https://wiki-graphs.herokuapp.com/" + "search?words=" + words;
-            // }
+            if (window.location.host.indexOf("127.0.0.1") || window.location.host.indexOf("localhost")) {
+                url = "https://wiki-graphs.herokuapp.com/" + "search?words=" + words;
+            }
 
             $.ajax({
                 type: "GET",
