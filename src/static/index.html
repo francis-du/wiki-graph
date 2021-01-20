@@ -9,6 +9,7 @@
     <script src="https://cdn.amcharts.com/lib/4/core.js"></script>
     <script src="https://cdn.amcharts.com/lib/4/charts.js"></script>
     <script src="https://cdn.amcharts.com/lib/4/plugins/forceDirected.js"></script>
+    <script src="https://cdn.amcharts.com/lib/4/themes/dark.js"></script>
     <script src="https://cdn.amcharts.com/lib/4/themes/animated.js"></script>
     <script src=" https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <style type="text/css">
@@ -17,7 +18,7 @@
             width: 100%;
             margin: 0;
             padding: 0;
-            background: #002b36;
+            background: #100f0f;
             background-size: cover;
             font-family: 'Open Sans', sans-serif;
             font-size: 100%;
@@ -44,10 +45,10 @@
         .search input[type="text"] {
             font-size: 1.2em;
             font-weight: 600;
-            color: rgba(0, 0, 0, 0.452);
+            color: #100f0f;
             padding: 1.3em 1em 1.3em 1.5em;
             width: 70%;
-            background: #d2cece;
+            background: #cbc9c9;
             border: 0;
             outline: 0;
         }
@@ -67,7 +68,7 @@
             border: 0;
             outline: 0;
             -webkit-appearance: none;
-            background: #608F92;
+            background: #80F5B4;
             filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#1fd8de', endColorstr='#1fd8de', GradientType=0)
         }
 
@@ -148,13 +149,8 @@
 
         #loading {
             position: absolute;
-            background-color: #002b36;
             width: 100%;
             height: 100%;
-        }
-
-        #loading_bg {
-            background-color: rgba(0, 0, 0, 0.7);
         }
 
         .loader {
@@ -179,7 +175,7 @@
             display: block;
             width: 15px;
             height: 15px;
-            background: #ce4233;
+            background: #80F5B4;
             position: absolute;
             -webkit-animation: load .7s infinite alternate ease-in-out;
             animation: load .7s infinite alternate ease-in-out;
@@ -286,55 +282,61 @@
             document.getElementById("chart").style.width = "100%";
             document.getElementById("chart").style.position = "fixed";
 
-            am4core.ready(function () {
-                am4core.useTheme(am4themes_animated);
-                const chart = am4core.create("chart", am4plugins_forceDirected.ForceDirectedTree);
-                const networkSeries = chart.series.push(new am4plugins_forceDirected.ForceDirectedSeries());
+            am4core.useTheme(am4themes_animated);
+            am4core.useTheme(am4themes_dark);
+            let chart = am4core.create("chart", am4plugins_forceDirected.ForceDirectedTree);
+            chart.responsive.enabled = true;
+            chart.contextMenuDisabled = true;
+            let networkSeries = chart.series.push(new am4plugins_forceDirected.ForceDirectedSeries());
 
-                networkSeries.dataFields.id = "id";
-                networkSeries.dataFields.name = "title";
-                networkSeries.dataFields.value = "value";
-                networkSeries.dataFields.children = "children";
-                networkSeries.data = data;
+            networkSeries.dataFields.id = "id";
+            networkSeries.dataFields.link = "link"
+            networkSeries.dataFields.name = "title";
+            networkSeries.dataFields.value = "value";
+            networkSeries.dataFields.children = "children";
+            networkSeries.data = data;
 
-                networkSeries.nodes.template.label.text = "{name}"
-                networkSeries.fontSize = 15;
-                networkSeries.linkWithStrength = 0;
+            networkSeries.nodes.template.label.text = "{name}"
+            networkSeries.fontSize = 15;
+            networkSeries.linkWithStrength = 0;
 
-                const nodeTemplate = networkSeries.nodes.template;
-                nodeTemplate.tooltipText = "{summary}";
-                nodeTemplate.fillOpacity = 1;
-                nodeTemplate.label.hideOversized = true;
-                nodeTemplate.label.truncate = true;
+            const nodeTemplate = networkSeries.nodes.template;
+            nodeTemplate.tooltipText = "{summary}";
+            nodeTemplate.fillOpacity = 1;
+            nodeTemplate.label.hideOversized = true;
+            nodeTemplate.label.truncate = true;
 
-                const linkTemplate = networkSeries.links.template;
-                linkTemplate.strokeWidth = 1;
-                const linkHoverState = linkTemplate.states.create("hover");
-                linkHoverState.properties.strokeOpacity = 1;
-                linkHoverState.properties.strokeWidth = 1;
+            const linkTemplate = networkSeries.links.template;
+            linkTemplate.strokeWidth = 1;
+            const linkHoverState = linkTemplate.states.create("hover");
+            linkHoverState.properties.strokeOpacity = 1;
+            linkHoverState.properties.strokeWidth = 1;
 
-                nodeTemplate.events.on("dblclick", function (event) {
-                    const dataItem = event.target.dataItem;
-                    dataItem.childLinks.each(function (link) {
-                        link.ondblclick = true
-                        console.log("link=>" + link)
-                    })
+            nodeTemplate.events.on("rightclick", function (event) {
+                const iHeight = 600;
+                const iWidth = 600;
+                let url = event.target.dataItem.link + "/wiki/" + event.target.dataItem.name;
+                let title = event.target.dataItem.title;
+                const iTop = (window.screen.availHeight - 30 - iHeight) / 2;
+                const iLeft = (window.screen.availWidth - 10 - iWidth) / 2;
+                window.open(url, title, 'height=' + iHeight + ',innerHeight=' + iHeight
+                    + ',width=' + iWidth + ',innerWidth=' + iWidth + ',top=' + iTop + ',left=' + iLeft
+                    + ',status=no,toolbar=no,menubar=no,location=no,resizable=no,scrollbars=0,titlebar=no');
+            })
+
+            nodeTemplate.events.on("over", function (event) {
+                const dataItem = event.target.dataItem;
+                dataItem.childLinks.each(function (link) {
+                    link.isHover = true;
                 })
+            })
 
-                nodeTemplate.events.on("over", function (event) {
-                    const dataItem = event.target.dataItem;
-                    dataItem.childLinks.each(function (link) {
-                        link.isHover = true;
-                    })
+            nodeTemplate.events.on("out", function (event) {
+                const dataItem = event.target.dataItem;
+                dataItem.childLinks.each(function (link) {
+                    link.isHover = false;
                 })
-
-                nodeTemplate.events.on("out", function (event) {
-                    const dataItem = event.target.dataItem;
-                    dataItem.childLinks.each(function (link) {
-                        link.isHover = false;
-                    })
-                })
-            });
+            })
         }
     </script>
 </div>
