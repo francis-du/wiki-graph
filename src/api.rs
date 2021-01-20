@@ -51,6 +51,8 @@ impl API {
                     https://wiki-graph.fracnis.run</a></div>",
                 )
                 .content_type(mime::HTML)
+                .header("Access-Control-Allow-Origin", "*")
+                .header("Access-Control-Allow-Methods", "GET")
                 .build();
             Ok(response)
         });

@@ -1,7 +1,8 @@
 use log::{error, info};
 use rand::{thread_rng, Rng};
 use serde::{Deserialize, Serialize};
-use tide::Request;
+use tide::http::mime;
+use tide::{Request, Response, StatusCode};
 use wikipedia::Wikipedia;
 
 use crate::common::network::ProxyClient;
@@ -17,6 +18,7 @@ struct Search {
 #[derive(Debug, Serialize, Clone)]
 struct WikiGraphInfo {
     id: u32,
+    link: String,
     title: String,
     value: u32,
     summary: String,
@@ -26,6 +28,7 @@ struct WikiGraphInfo {
 impl WikiGraphInfo {
     fn new(
         id: u32,
+        link: String,
         title: String,
         value: u32,
         summary: String,
@@ -33,6 +36,7 @@ impl WikiGraphInfo {
     ) -> Self {
         Self {
             id,
+            link,
             title,
             value,
             summary,
@@ -47,9 +51,6 @@ pub async fn search(req: Request<()>) -> tide::Result {
 
     if req.query::<Search>().is_ok() {
         let query: Search = req.query()?;
-        let mut wiki_info =
-            WikiGraphInfo::new(0, query.words.clone(), 2, query.words.clone(), vec![]);
-
         let mut wiki = Wikipedia::<ProxyClient>::default();
         // limit page results
         if query.limit.is_some() {
@@ -59,17 +60,28 @@ pub async fn search(req: Request<()>) -> tide::Result {
         }
 
         // limit results
+        let lang;
         if query.lang.is_some() {
-            wiki.set_base_url(
-                format!("https://{}.wikipedia.org/w/api.php", query.lang.unwrap()).as_str(),
-            );
+            lang = query.lang.unwrap();
+            wiki.set_base_url(format!("https://{}.wikipedia.org/w/api.php", lang.clone()).as_str());
         } else {
-            let language = semantics::identify(query.words.clone());
-            wiki.set_base_url(format!("https://{}.wikipedia.org/w/api.php", language).as_str());
+            lang = semantics::identify(query.words.clone()).to_string();
+            wiki.set_base_url(format!("https://{}.wikipedia.org/w/api.php", lang.clone()).as_str());
         }
         info!("Wikipedia api address {}", wiki.base_url());
 
-        // data processing
+        // Response data
+        let link = format!("https://{}.wikipedia.org", lang.clone());
+        let mut wiki_info = WikiGraphInfo::new(
+            0,
+            link.clone(),
+            query.words.clone(),
+            2,
+            query.words.clone(),
+            vec![],
+        );
+
+        // Processing data
         let words = query.words.as_str();
         match wiki.search(words) {
             Ok(results) => {
@@ -83,18 +95,25 @@ pub async fn search(req: Request<()>) -> tide::Result {
                         Err(_) => thread_rng().gen(),
                     };
 
-                    let mut children =
-                        WikiGraphInfo::new(id, title, 1, page.get_summary().unwrap(), vec![]);
+                    let mut children = WikiGraphInfo::new(
+                        id,
+                        link.clone(),
+                        title,
+                        1,
+                        page.get_summary().unwrap(),
+                        vec![],
+                    );
 
-                    let mut index: u32 = 0;
+                    let index: u32 = 0;
                     for x in links_iter {
-                        index += 1;
-                        if index > 30 {
-                            break;
-                        }
+                        // index += 1;
+                        // if index > 30 {
+                        //     break;
+                        // }
                         let link_title = x.title;
                         let wiki_link = WikiGraphInfo::new(
                             index,
+                            link.clone(),
                             link_title.clone(),
                             0,
                             link_title.to_string(),
@@ -115,5 +134,11 @@ pub async fn search(req: Request<()>) -> tide::Result {
         };
         response.push(wiki_info);
     }
-    Ok(serde_json::json!(response).into())
+
+    Ok(Response::builder(StatusCode::Ok)
+        .header("Access-Control-Allow-Origin", "*")
+        .header("Access-Control-Allow-Methods", "GET")
+        .body(serde_json::json!(response))
+        .content_type(mime::JSON)
+        .build())
 }
