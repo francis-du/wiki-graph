@@ -89,7 +89,9 @@ pub async fn search(req: Request<()>) -> tide::Result {
                 for res in results {
                     let page = wiki.page_from_title(res.to_string());
                     let title = page.get_title().unwrap();
-                    let links_iter = page.get_links().unwrap()
+                    let links_iter = page
+                        .get_links()
+                        .unwrap()
                         .filter(|x| x.title.clone().contains(words.clone()));
 
                     let id = match page.get_pageid().unwrap().parse::<u32>() {
