@@ -3,7 +3,7 @@
 ![Logo](docs/src/images/icon.jpg)
 
 <h1>Wiki Graph</h1>
-<h3>A Wikipedia search visualization toolkit</h3>
+<h3>A Wikipedia search visualization tool</h3>
 
 ![Top Lang](https://img.shields.io/github/languages/top/francis-du/wiki-graph?color=%23E5531A&style=flat-square)
 [![Api docs](https://img.shields.io/badge/Api-Doc-a94064?style=flat-square&color=%23E5531A)](https://wiki-graph.francis.run)
@@ -39,7 +39,7 @@ And keywords support multiple languages.[Checkout supported languages](https://g
 ░░░╚═╝░░░╚═╝░░╚═╝╚═╝░░╚═╝╚═╝  ░╚═════╝░╚═╝░░╚═╝╚═╝░░╚═╝╚═╝░░░░░╚═╝░░╚═╝
 
 Version: 0.1.0
-A wiki graph app for Logseq Remote Interview.
+A Wikipedia search visualization tool
 
 USAGE:
     wiki-graph [FLAGS] [OPTIONS] <SUBCOMMAND>

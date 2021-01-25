@@ -20,7 +20,7 @@ mod handler;
 ░░╚██╔╝░╚██╔╝░██║██║░╚██╗██║  ╚██████╔╝██║░░██║██║░░██║██║░░░░░██║░░██║
 ░░░╚═╝░░░╚═╝░░╚═╝╚═╝░░╚═╝╚═╝  ░╚═════╝░╚═╝░░╚═╝╚═╝░░╚═╝╚═╝░░░░░╚═╝░░╚═╝\n
 Version:",
-    about = "A wiki graph app for Logseq Remote Interview."
+    about = "A Wikipedia search visualization tool."
 )]
 struct Opts {
     /// Activate debug mode
