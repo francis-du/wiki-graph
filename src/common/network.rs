@@ -1,10 +1,8 @@
 use std::io::Read;
 use std::time::Duration;
 
-use log::info;
+use log::{debug, error, info};
 use reqwest::Proxy;
-use serde_json;
-use serde_json::Value;
 use wikipedia::http::HttpClient;
 
 /// ProxyClient
@@ -62,15 +60,53 @@ impl HttpClient for ProxyClient {
 }
 
 pub fn set_proxy() -> Result<(), reqwest::Error> {
-    let json: Value = reqwest::get("http://118.24.52.95/get")?.json()?;
+    use serde::Deserialize;
+    use serde::Serialize;
 
-    match json["proxy"].as_str() {
-        None => {}
-        Some(proxy) => {
-            info!("Setup proxy http://{}", &proxy);
-            std::env::set_var("PROXY", format!("http://{}", proxy));
+    #[derive(Debug, Serialize, Deserialize)]
+    struct Response {
+        code: i32,
+        msg: String,
+        data: Data,
+    }
+
+    #[derive(Debug, Serialize, Deserialize)]
+    struct Data {
+        unique_id: String,
+        ip: String,
+        port: String,
+        country: String,
+        ip_address: String,
+        anonymity: i32,
+        protocol: String,
+        isp: String,
+        speed: i32,
+        validated_at: String,
+        created_at: String,
+        updated_at: String,
+    }
+
+    let url = "https://ip.jiangxianli.com/api/proxy_ip";
+    info!("Request a proxy from {}", &url);
+
+    match reqwest::get(url) {
+        Ok(mut res) => {
+            let response: Response = res.json()?;
+            debug!("{:?}", response);
+
+            if response.code == 0 {
+                let data = response.data;
+                let proxy: String = format!("{}://{}:{}", data.protocol, data.ip, data.port);
+                std::env::set_var("PROXY", &proxy);
+                info!("Setup system env: \"PROXY={}\"", proxy);
+            } else {
+                error!("Proxy acquisition failed");
+            }
         }
-    };
+        Err(error) => {
+            error!("Request proxy error {}", error)
+        }
+    }
 
     Ok(())
 }
